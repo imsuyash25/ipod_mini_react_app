@@ -15,7 +15,7 @@ const Songs=(props)=>{
                 <div>Artist: {artist}</div>
             </div>
             <audio className="Audio" controls>
-                <source src={src} type="audio/ogg"/>
+                <source src={src}  type="audio/ogg"/>
             </audio>
         </>
     );

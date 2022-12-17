@@ -18,6 +18,7 @@ const [handleStyle1, setStyles1] = useState({
     }   
 )
 
+const [onplay, setPlay] = useState(true);
 const [mutexB,setMutexB] = useState(true);
 const [handleStyle2, setStyles2] = useState({
   backgroundColor:"",
@@ -38,19 +39,20 @@ const [handleStyle4, setStyles4] = useState({
     play:false,
     move:0,
   });
+const[cursong,setSong] = useState(1);
 const [value, setVal]  = useState(1)
 const [songs, setCart] = useState([{
   title:"first",
   artist: "unknown1",
   src:"https://www.shortmusicclips.com/previews/epic-drums-15sec.mp3",
-  show:false,
+  show:true,
   num:1
   },
   {
     title:"second",
     artist: "unknown2",
     src:"https://www.shortmusicclips.com/previews/epic-drums-15sec.mp3",
-    show:true,
+    show:false,
     num:2
 }]
 )
@@ -152,6 +154,16 @@ function Menu_Items(Value){
 }
 
 function upClick(){
+  if(list_){
+    songs.map((song)=>{
+                                         
+
+
+
+                 
+    })
+  }
+
   while(!mutexB);
   setMutexB(false);
   if(value === 0){
@@ -181,33 +193,16 @@ function downClick(){
   console.log("down:",value);
 }
 function playClick(){
-  setMenu((previousState)=>{
- return{...previousState, play:true}
-  });
-  
-}
-
-document.addEventListener("touchstart",e =>{
-  console.log("start")
-  console.log(e);
-})
-document.addEventListener("touchmove",e =>{
-  console.log("move")
-  console.log(e);
-})
-document.addEventListener("touchend",e =>{
-  console.log("end")
-})
-
-/*window.addEventListener('scroll',function (){
-  if(window.pageYOffset > 50){
-    document.body.style.background = "red";
-  } 
-  else if(this.window.pageYOffset <50){
-    document.body.style.background = "white";
+  if(onplay){
+    setPlay(false);
+    console.log("pause");
   }
-});*/
-
+  else 
+  {
+    setPlay(true);
+    console.log("play");
+  }
+}
 function circleClick(){
   console.log("value:",value);
   switch(value){
@@ -263,9 +258,10 @@ function menuClick(){
             {list_ && songs.map((song)=>{
                 return(  
                 song.show && <Songs song={song}
-                  key={song.num}
+                  key={song.num} onplay= {onplay}
                   />
                 )
+                setSong(song.num);
             })
           }
           </div>
