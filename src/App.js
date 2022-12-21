@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import './App.css';
 import './home.css';
 import Album from './Album.js';
@@ -18,11 +18,11 @@ const [mutexB,setMutexB] = useState(true);
 const [songlist, setAlbum] = useState(false);
 
 const [value, setVal]  = useState(1);
-const [nextsong, setNext] = useState(0);
+const [nextsong, setNext] = useState(1);
 const [prevsong,setPrev] = useState(0);
 const [value2, setVal2] = useState(0);
 const [likemenu, setlikemenu] = useState(false);
-
+const [countlike, setCountlike] = useState(0);
 const [handleStyle1, setStyles1] = useState({
 backgroundColor:"blue",
 color:"white", 
@@ -43,10 +43,10 @@ const [handleStyle4, setStyles4] = useState({
   color:"",
   }   
 ) 
-const [initial, setFirst] = useState(false);
+//const [initial, setFirst] = useState(false);
 const [style2, setStylein] = useState({
-  backgroundColor:"",
-  color:"",
+  backgroundColor:"blue",
+  color:"white",
 })
 
 const [menuItem, setMenu] = useState({
@@ -340,21 +340,24 @@ function prev_song(){
 }
 function handlelike(song){
   let number = songs.indexOf(song);
-  if(song.like) setCart(songs.map((song1,index )=> index === number? {...song1,
+  if(song.like){setCart(songs.map((song1,index )=> index === number? {...song1,
      like:false, like_src:"https://cdn.iconscout.com/icon/free/png-128/heart-1161-457786.png"}:{...song1}));
+     setCountlike(countlike-1);
+  }
   else{
     setCart(songs.map((song1,index )=> index === number? {...song1,
       like:true, like_src:"https://cdn.iconscout.com/icon/free/png-128/heart-love-like-favorite-romance-gift-16-28686.png"}:{...song1}));
+      setCountlike(countlike+1);
   }
 }
 
 
-useEffect(()=> {
+/*useEffect(()=> {
   if(songlist && !initial){
     setStylein({background:"blue",color:"white"});
     setFirst(true);
   }
-})
+})*/
 
 function menuClick(){
   /*const {menu} = this.state;
@@ -393,6 +396,8 @@ function menuClick(){
       />
       :null
     }
+    {(likemenu && countlike === 0)? <div className='countlike'> No Song liked !
+    <img className="Nolikemoji" src="https://cdn-icons-png.flaticon.com/128/742/742752.png" alt ="emoji" /></div> :null}
     {
     songlist? <ul className='product2'>{songs && songs.map((song,index) =>{
       return(
@@ -411,7 +416,7 @@ function menuClick(){
       likemenu? <ul className = 'product2'>{
         songs && songs.map((song,index)=>{
           return (
-            index >= value2 && index < (value2+4) && song.like &&  < Likesong song = {song}
+            song.like &&  < Likesong song = {song}
             key = {index} 
             song_name = {song.title} 
             song_artist = {song.artist}
