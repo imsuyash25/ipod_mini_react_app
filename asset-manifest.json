@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/ipod_mini_react_app/static/css/main.0bb76265.css",
+    "main.js": "/ipod_mini_react_app/static/js/main.f4cc3aa3.js",
+    "static/js/787.edfe0232.chunk.js": "/ipod_mini_react_app/static/js/787.edfe0232.chunk.js",
+    "index.html": "/ipod_mini_react_app/index.html",
+    "main.0bb76265.css.map": "/ipod_mini_react_app/static/css/main.0bb76265.css.map",
+    "main.f4cc3aa3.js.map": "/ipod_mini_react_app/static/js/main.f4cc3aa3.js.map",
+    "787.edfe0232.chunk.js.map": "/ipod_mini_react_app/static/js/787.edfe0232.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0bb76265.css",
+    "static/js/main.f4cc3aa3.js"
+  ]
+}
