@@ -2,21 +2,28 @@ import * as React from 'react';
 import './home.css';
 
 const Songs=(props)=>{
-    const{title, src,artist} = props.song;
+    const{title, src,artist,img,bgimg,like_src} = props.song;
     return(
         <>
+        <img className="bg_image_song"
+             src={bgimg} 
+             alt=""/>
         <div className = "img_song">
             <img  className = "img_song"
-            src="https://tse4.mm.bing.net/th?id=OIP.byj4-96U5Si4Sg6e1PFFiQHaHa&pid=Api&P=0&w=166&h=166"
+            src={img}
             alt="song.img"/>
         </div>
-            <div className="song_info">
-                <div>Title: {title}</div>
-                <div>Artist: {artist}</div>
-            </div>
-            <audio className="Audio" controls>
-                <source src={src}  type="audio/ogg"/>
-            </audio>
+        <div className="Liked" > 
+            <img className="Liked" src={like_src} onClick = {()=> props.onLike(props.song)} alt="like"/>
+        </div>
+        <div className="song_info">
+            <div>Title: {title}</div>
+            <div>Artist: {artist}</div>
+        </div>
+        <audio className="Audio" controls>
+            <source src={src}  type="audio/ogg"/>
+        </audio>
+        
         </>
     );
 }

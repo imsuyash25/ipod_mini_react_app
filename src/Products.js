@@ -5,11 +5,11 @@ function Menu(props){
     
     return(
         <>
-          <ul>
-                <li><div style={props.onStyle1}>Songs </div></li>
-                <li><div style={props.onStyle2}>Album </div></li>
-                <li><div style={props.onStyle3}>Artist</div></li>
-                <li><div style={props.onStyle4}>Playlist</div></li>
+          <ul className="product">
+                <li><div  className="listmenu" style={props.onStyle1}>Songs </div></li>
+                <li><div  className="listmenu" style={props.onStyle2}>Album </div></li>
+                <li><div  className="listmenu" style={props.onStyle3}>Liked</div></li>
+                <li><div  className="listmenu" style={props.onStyle4}>Artist</div></li>
             </ul>      
         </>
     );
