@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import * as React from 'react';
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import './App.css';
 import './home.css';
 import Album from './Album.js';
@@ -9,50 +9,53 @@ import Menu from './Products.js';
 import Songlist from './Songlist.js';
 import Likesong from './likesong.js';
 
-function App(){
+
+function App() {
 //const[songs,setCart] = props.songs;
-const [menu_show, setState] = useState(false);
-const [list_, setList] = useState(false);
-const [onplay, setPlay] = useState(true);
-const [mutexB,setMutexB] = useState(true);
-const [songlist, setAlbum] = useState(false);
-
-const [value, setVal]  = useState(1);
-const [nextsong, setNext] = useState(1);
-const [prevsong,setPrev] = useState(0);
-const [value2, setVal2] = useState(0);
-const [likemenu, setlikemenu] = useState(false);
-const [countlike, setCountlike] = useState(0);
-const [handleStyle1, setStyles1] = useState({
-backgroundColor:"blue",
-color:"white", 
-}   
-)
-const [handleStyle2, setStyles2] = useState({
-  backgroundColor:"",
-  color:"",
-  }   
-)
-const [handleStyle3, setStyles3] = useState({
-  backgroundColor:"",
-  color:"",
-  }
-)
-const [handleStyle4, setStyles4] = useState({
-  backgroundColor:"",
-  color:"",
-  }   
-) 
-//const [initial, setFirst] = useState(false);
-const [style2, setStylein] = useState({
+  const [menu_show, setState] = useState(false);
+  const [list_, setList] = useState(false);
+  const [onplay, setPlay] = useState(true);
+  const [mutexB,setMutexB] = useState(true);
+  const [songlist, setAlbum] = useState(false);
+  const [value, setVal]  = useState(1);
+  const [nextsong, setNext] = useState(1);
+  const [prevsong,setPrev] = useState(0);
+  const [value2, setVal2] = useState(0);
+  const [value3, setVal3] = useState(0);
+  const [likemenu, setlikemenu] = useState(false);
+  const [countlike, setCountlike] = useState(0);
+  const [favsong, setFav] = useState();
+  const [initial, setInit] = useState(true);
+  const [handleStyle1, setStyles1] = useState({
   backgroundColor:"blue",
-  color:"white",
-})
+  color:"white", 
+  }   
+  )
+  const [handleStyle2, setStyles2] = useState({
+    backgroundColor:"",
+    color:"",
+    }   
+  )
+  const [handleStyle3, setStyles3] = useState({
+    backgroundColor:"",
+    color:"",
+    }
+  )
+  const [handleStyle4, setStyles4] = useState({
+    backgroundColor:"",
+    color:"",
+    }   
+  ) 
+  //const [initial, setFirst] = useState(false);
+  const [style2, setStylein] = useState({
+    backgroundColor:"blue",
+    color:"white",
+  })
 
-const [menuItem, setMenu] = useState({
-play:false,
-move:0,
-  });
+  const [menuItem, setMenu] = useState({
+  play:false,
+  move:0,
+    });
 
 
 
@@ -241,8 +244,12 @@ function upClick(){
     prev_song();
     return;
   }
-  else if(songlist || likemenu){
+  else if(songlist){
     (value2===0)? setVal2(numsong-1):setVal2(value2-1);
+    return;
+  }
+  else if(likemenu){
+    (value3===0)? setVal3(countlike-1):setVal3(value3-1);
     return;
   }
   while(!mutexB);
@@ -269,15 +276,19 @@ function downClick(){
     next_song();
     return;
   }
-  else if(songlist || likemenu){
+  else if(songlist){
     console.log(value2);
     setVal2((value2+1)%numsong);
+    return;
+  }
+  else if(likemenu){
+    setVal3((value3+1)%countlike);
     return;
   }
   while(!mutexB);
   setMutexB(false);
   Menu_Items(value+1);
-  setVal((value+1)%4)
+  setVal((value+1)%4);
   setMutexB(true);
 }
 function playClick(){
@@ -306,14 +317,22 @@ function circleClick(){
       case 3:
         setlikemenu(true);
         setState(false);
-        setVal2(0);
+        setVal3(0);
         break;
     }
   }
-  if(songlist || likemenu){
+  if(songlist){
     switch(value2){
       case value2: 
         play_song_now(value2);
+        break;
+    }
+  }
+  if(likemenu){
+    const var123 = favsong[value3].num
+    switch(var123){
+      case var123: 
+        play_song_now(var123);
         break;
     }
   }
@@ -340,25 +359,28 @@ function prev_song(){
 }
 function handlelike(song){
   let number = songs.indexOf(song);
-  if(song.like){setCart(songs.map((song1,index )=> index === number? {...song1,
+  if(song.like)
+    {
+     setCart(songs.map((song1,index )=> index === number? {...song1,
      like:false, like_src:"https://cdn.iconscout.com/icon/free/png-128/heart-1161-457786.png"}:{...song1}));
      setCountlike(countlike-1);
+     setInit(true);
   }
   else{
-    setCart(songs.map((song1,index )=> index === number? {...song1,
+      setCart(songs.map((song1,index )=> index === number? {...song1,
       like:true, like_src:"https://cdn.iconscout.com/icon/free/png-128/heart-love-like-favorite-romance-gift-16-28686.png"}:{...song1}));
       setCountlike(countlike+1);
+      setInit(true);
   }
+
 }
 
-
-/*useEffect(()=> {
-  if(songlist && !initial){
-    setStylein({background:"blue",color:"white"});
-    setFirst(true);
-  }
-})*/
-
+useEffect(() =>{
+    if(likemenu && initial){
+      setFav(songs.filter(item=>item.like === true));
+      setInit(false);
+    }
+});
 function menuClick(){
   /*const {menu} = this.state;
   console.log("done");
@@ -386,7 +408,7 @@ function menuClick(){
       <img className="bg_image"
     src="https://tse1.mm.bing.net/th?id=OIP.EXsDdyu_ZfRuKnUINaKCsgHaE8&pid=Api&P=0&w=250&h=166" 
     alt=""/>
-      <div id="name" style={{fontSize:12,fontFamily:"sherif"}} >iPod</div>
+    <div id="name" style={{fontSize:12,fontFamily:"sherif"}} >iPod</div>
     {
       menu_show? <Menu 
       onStyle1= {handleStyle1}
@@ -397,37 +419,40 @@ function menuClick(){
       :null
     }
     {(likemenu && countlike === 0)? <div className='countlike'> No Song liked !
-    <img className="Nolikemoji" src="https://cdn-icons-png.flaticon.com/128/742/742752.png" alt ="emoji" /></div> :null}
+    <img className="Nolikemoji" src="https://cdn-icons-png.flaticon.com/128/742/742752.png" alt ="emoji" /></div> :null }
     {
-    songlist? <ul className='product2'>{songs && songs.map((song,index) =>{
+      songlist? <ul className='product2'>{songs && songs.map((song,index) => {
       return(
-    index >= value2 && index < (value2+4) && <Songlist song = {song}
-    key = {index} 
-    song_name = {song.title} 
-    song_artist = {song.artist}
-    onstyle2 = {value2===index ? style2:null}
-    />
+      index >= value2 && index < (value2+4) && <Songlist song = {song}
+      key = {index} 
+      song_name = {song.title} 
+      song_artist = {song.artist}
+      onstyle2 = {value2===index ? style2:null}
+      />
       )
-    })
-    }</ul>
+     })
+    }
+    </ul>
     :null
       }
     {
-      likemenu? <ul className = 'product2'>{
-        songs && songs.map((song,index)=>{
-          return (
-            song.like &&  < Likesong song = {song}
-            key = {index} 
-            song_name = {song.title} 
-            song_artist = {song.artist}
-            onstyle2 = {value2===index ? style2:null}
-          />
-          )
+    likemenu? <ul className = 'product2'>{
+    favsong && favsong.map((song,index)=>{
+      return (
+        song.like && index >= value3 && index < (value3+4) &&  <Likesong song = {song}
+        key = {index} 
+        song_name = {song.title} 
+        song_artist = {song.artist}
+        onstyle2 = {value3===index ? style2:null}
+        />
+        )
         })
-      }</ul>
+      }
+      </ul>
       :null
     }
-    {list_ && songs && songs.map((song,index) => {
+    {
+    list_ && songs && songs.map((song,index) => {
     return(  
     song.show && <Songs song={song}
     key={index} onplay = {onplay}
@@ -436,15 +461,12 @@ function menuClick(){
     )  
     }) 
     }
-      <Album
-      data = {menuClick}
-      up_click = {upClick}
-      down_click = {downClick}
-      play_click = {playClick}
-      circle_click= {circleClick}
-      />
-      </div>
-      </div>
+    <Album
+    data = {menuClick}
+    up_click = {upClick} down_click = {downClick} play_click = {playClick} circle_click= {circleClick}
+    />  
+    </div>
+    </div>
   )
 }
 export default App;
